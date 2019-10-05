@@ -12,7 +12,7 @@ contract milkyChain{
     weigher = _weigher;
     tester = _tester;
     packer= _packer;
-    pasteurizer=_pasteurizer
+    pasteurizer=_pasteurizer;
     dispatcher = _dispatcher;
       }
 struct milkIn{
@@ -26,7 +26,7 @@ struct milkOut{
      uint quantity;
    }
  struct milkTest{
-   uint testDate,
+   uint testDate;
    string sampleId;
    uint acidity;
    uint alchol;
@@ -37,14 +37,14 @@ struct milkOut{
    uint salt;
    uint urea;
     }
-struct pasteurizer {
+struct pasteur {
     uint date;
     uint chillingTemp;
     uint pasteurizedTemp;
     uint waterQuantity;
    }
 struct lorryDispatch{
-   
+   uint date;
    uint milkQuantity;
    uint totalTrays;
    uint emptyTrays;
@@ -52,11 +52,11 @@ struct lorryDispatch{
   }
 mapping(uint=>milkIn[]) public inlet;
 mapping(uint=>milkTest[]) public milkTests;
-mapping(uint=>pasteurizer[]) public pasteurData;
-mapping(uint=>milkOut[]) public outLet;
+mapping(uint=>pasteur[]) public pasteurData;
+mapping(uint=>milkOut[]) public outlet;
 mapping(uint=>lorryDispatch[]) public dispatches;
  
-function recordMilkIn(string memory _from, uint _quantity, string _vehicle,uint _date) public {
+function recordMilkIn(string memory _from, uint _quantity, string memory _vehicle,uint _date) public {
     
     milkIn memory milkData= milkIn(_from, _quantity, _vehicle, _date);
       
@@ -64,15 +64,15 @@ function recordMilkIn(string memory _from, uint _quantity, string _vehicle,uint 
     
    }
    
-  function addTestResults(uint _date,string memory _sampleId,uint acidity,uint _alchol,uint _fat,uint _clr,uint _sugar,uint _neutraizer,uint _salt,uint _urea) public {
+  function addTestResults(uint _date,string memory _sampleId,uint _acidity,uint _alchol,uint _fat,uint _clr,uint _sugar,uint _neutraizer,uint _salt,uint _urea) public {
      require(msg.sender==tester);
      milkTest memory testResults=milkTest(_date,_sampleId,_acidity,_alchol,_fat,_clr,_sugar,_neutraizer,_salt,_urea);
      milkTests[_date].push(testResults);
          }
 
-function addPasteurData(uint _date,uint _chillingTemp,uint _pasteurizedTemp,uint _waterQuantity) public {
+ function addPasteurData(uint _date,uint _chillingTemp,uint _pasteurizedTemp,uint _waterQuantity) public {
      require(msg.sender==pasteurizer);
-     pasteurizer memory testResults=pasteurizer(_date,_chillingTemp, pasteurizedTemp, _waterQuantity);
+     pasteur memory testResults=pasteur(_date,_chillingTemp, _pasteurizedTemp, _waterQuantity);
      pasteurData[_date].push(testResults);
          }
 
@@ -83,7 +83,7 @@ function addPasteurData(uint _date,uint _chillingTemp,uint _pasteurizedTemp,uint
     outlet[_date].push(milkData);
     
    }
-function recordMilkDispatch(uint _date, uint _quantity,uint _totalTrays, uint _emptyTrays,uint _returns) public {
+  function recordMilkDispatch(uint _date, uint _quantity,uint _totalTrays, uint _emptyTrays,uint _returns) public {
     require(msg.sender==dispatcher);
     lorryDispatch memory milkData= lorryDispatch(_date, _quantity,_totalTrays,_emptyTrays,_returns);
       
