@@ -21,6 +21,10 @@ struct milkIn{
     string vehicle;
     uint date;
     }
+struct milkOut{
+     uint date;
+     uint quantity;
+   }
  struct milkTest{
    uint testDate,
    string sampleId;
@@ -39,13 +43,20 @@ struct pasteurizer {
     uint pasteurizedTemp;
     uint waterQuantity;
    }
-
+struct lorryDispatch{
+   
+   uint milkQuantity;
+   uint totalTrays;
+   uint emptyTrays;
+   uint returnedTrays;
+  }
 mapping(uint=>milkIn[]) public inlet;
 mapping(uint=>milkTest[]) public milkTests;
 mapping(uint=>pasteurizer[]) public pasteurData;
 mapping(uint=>milkOut[]) public outLet;
-
- function recordMilkIn(string memory _from, uint _quantity, string _vehicle,uint _date) public {
+mapping(uint=>lorryDispatch[]) public dispatches;
+ 
+function recordMilkIn(string memory _from, uint _quantity, string _vehicle,uint _date) public {
     
     milkIn memory milkData= milkIn(_from, _quantity, _vehicle, _date);
       
@@ -67,26 +78,20 @@ function addPasteurData(uint _date,uint _chillingTemp,uint _pasteurizedTemp,uint
 
   function recordMilkOut(uint _date, uint _quantity) public {
     require(msg.sender==packer);
-    milkOut memory milkData= milkIn(_date, _quantity);
+    milkOut memory milkData= milkOut(_date, _quantity);
       
     outlet[_date].push(milkData);
     
    }
+function recordMilkDispatch(uint _date, uint _quantity,uint _totalTrays, uint _emptyTrays,uint _returns) public {
+    require(msg.sender==dispatcher);
+    lorryDispatch memory milkData= lorryDispatch(_date, _quantity,_totalTrays,_emptyTrays,_returns);
+      
+    dispatches[_date].push(milkData);
+    
+   }
 
-  struct milkOut{
-     uint date;
-     uint quantity;
-     
-
-}
-
-  struct LorryDispatch{
-   
-   uint milkQuantity;
-   uint totalTrays;
-   uint emptyTrays;
-   uint returnedTrays;
-  }
+  
 
 }
 
