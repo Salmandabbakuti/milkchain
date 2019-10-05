@@ -57,7 +57,7 @@ mapping(uint=>milkOut[]) public outlet;
 mapping(uint=>lorryDispatch[]) public dispatches;
  
 function recordMilkIn(string memory _from, uint _quantity, string memory _vehicle,uint _date) public {
-    
+    require(msg.sender==weigher);
     milkIn memory milkData= milkIn(_from, _quantity, _vehicle, _date);
       
     inlet[_date].push(milkData);
