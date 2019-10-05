@@ -4,10 +4,15 @@ contract milkyChain{
 
     address public weigher;
     address public tester;
-    address public chiller;
     address public pasteurizer;
-    address public packer;
     address public dispatcher;
+
+   constructor(address _weigher,address _tester,address _pasteurizer,address _dispatcher) public {
+    weigher = _weigher;
+    tester = _tester;
+    pasteurizer=_pasteurizer
+    dispatcher = _dispatcher;
+      }
 
 
   struct milkIn{
@@ -33,9 +38,17 @@ contract milkyChain{
 
   struct pasteurizer {
     
-    uint temparature;
+    uint chillingTemp;
+    uint pasteurizedTemp;
     uint waterQuantity;
    }
+
+  struct milkOut{
+     uint quantity;
+     uint wastage;
+     
+
+}
 
   struct LorryDispatch{
    
